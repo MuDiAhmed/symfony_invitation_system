@@ -209,6 +209,9 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.12.0"
     },
+    "symfony/process": {
+        "version": "v3.4.30"
+    },
     "symfony/property-access": {
         "version": "v3.4.30"
     },
@@ -244,6 +247,15 @@
     },
     "symfony/stopwatch": {
         "version": "v3.4.30"
+    },
+    "symfony/web-server-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
+        }
     },
     "symfony/yaml": {
         "version": "v3.4.30"
