@@ -11,3 +11,6 @@
 4.  Run `php bin/console server:start` to run symfony dev server
 5.  Run `php bin/console doctrine:migrations:migrate`to migrate database
 6.  Run `php bin/console doctrine:fixtures:load` to load fixture users
+7.  Run `mkdir -p config/jwt`
+8.  Run `openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096` then use the `JWT_PASSPHRASE` in the `.env` file as the passphrase
+9.  Run `openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout`
