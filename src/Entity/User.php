@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUser;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, JWTUserInterface
 {
     /**
      * @ORM\Id()
@@ -32,6 +35,32 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=500)
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invitaion", mappedBy="sender", orphanRemoval=true)
+     */
+    private $SentInvitations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invitaion", mappedBy="Receiver", orphanRemoval=true)
+     */
+    private $ReceivedInvitations;
+
+    public function __construct($email = null, array $roles = [])
+    {
+        $this->email = $email;
+        $this->roles = $roles;
+        $this->SentInvitations = new ArrayCollection();
+        $this->ReceivedInvitations = new ArrayCollection();
+    }
+
+    public static function createFromPayload($username, array $payload)
+    {
+        return new self(
+            $username,
+            $payload['roles']
+        );
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +136,68 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitaion[]
+     */
+    public function getSentInvitations(): Collection
+    {
+        return $this->SentInvitations;
+    }
+
+    public function addSentInvitation(Invitaion $sentInvitation): self
+    {
+        if (!$this->SentInvitations->contains($sentInvitation)) {
+            $this->SentInvitations[] = $sentInvitation;
+            $sentInvitation->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentInvitation(Invitaion $sentInvitation): self
+    {
+        if ($this->SentInvitations->contains($sentInvitation)) {
+            $this->SentInvitations->removeElement($sentInvitation);
+            // set the owning side to null (unless already changed)
+            if ($sentInvitation->getSender() === $this) {
+                $sentInvitation->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitaion[]
+     */
+    public function getReceivedInvitations(): Collection
+    {
+        return $this->ReceivedInvitations;
+    }
+
+    public function addReceivedInvitation(Invitaion $receivedInvitation): self
+    {
+        if (!$this->ReceivedInvitations->contains($receivedInvitation)) {
+            $this->ReceivedInvitations[] = $receivedInvitation;
+            $receivedInvitation->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedInvitation(Invitaion $receivedInvitation): self
+    {
+        if ($this->ReceivedInvitations->contains($receivedInvitation)) {
+            $this->ReceivedInvitations->removeElement($receivedInvitation);
+            // set the owning side to null (unless already changed)
+            if ($receivedInvitation->getReceiver() === $this) {
+                $receivedInvitation->setReceiver(null);
+            }
+        }
 
         return $this;
     }
