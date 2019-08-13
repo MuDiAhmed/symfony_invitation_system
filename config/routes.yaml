@@ -4,3 +4,5 @@
 #index:
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
+api_login_check:
+  path: /api/login
