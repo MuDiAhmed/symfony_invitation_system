@@ -71,4 +71,21 @@ class InvitaionController extends FOSRestController
         $entity_manager->flush();
         return View::create($invitation, Response::HTTP_OK);
     }
+
+    /**
+     * @Rest\Delete("/invitation/{id}", name="api_invitaion_remove", requirements={"id"="\d+"})
+     */
+    public function removeInvitation(ValidatorInterface $validator, Request $request, Invitaion $invitation)
+    {
+        $user = $this->getUser();
+        if($user->getEmail() !== $invitation->getSender()->getEmail()){
+            return View::create("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
+        $entity_manager = $this->getDoctrine()->getManager();
+        $sender = $entity_manager->getRepository(User::class)->findOneBy(['email'=>$user->getEmail()]);
+        $sender->removeSentInvitation($invitation);
+        $entity_manager->persist($sender);
+        $entity_manager->flush();
+        return View::create($invitation, Response::HTTP_OK);
+    }
 }

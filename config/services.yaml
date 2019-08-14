@@ -5,7 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     sender_email: sender@fake.com
+    sender_email_2: sender2@fake.com
     receiver_email: receiver@fake.com
+    receiver_email_2: receiver2@fake.com
 
 services:
     # default configuration for services in *this* file
