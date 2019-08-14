@@ -1,11 +1,11 @@
-###Requirements & Versions:  
+### Requirements & Versions:  
     Symfony: 3.4.3  
     MySql Server: 5.7
     PHP: 7.2.19
     Composer: 1.9.0
     
 
-###Run:  
+### Run:  
 1.  Create MySql user `root` with password `root`
 2.  Open terminal then run command `cd <path/to/app/root>`
 3.  Run `Composer install` to install required packages
