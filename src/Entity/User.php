@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUser;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -38,11 +38,13 @@ class User implements UserInterface, JWTUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invitaion", mappedBy="sender", orphanRemoval=true)
+     * @Serializer\SerializedName("sent_invitations")
      */
     private $SentInvitations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invitaion", mappedBy="Receiver", orphanRemoval=true)
+     * @Serializer\SerializedName("receiver_invitations")
      */
     private $ReceivedInvitations;
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvitaionRepository")
@@ -25,6 +26,7 @@ class Invitaion
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ReceivedInvitations")
      * @ORM\JoinColumn(nullable=false)
+     * @Serializer\SerializedName("receiver")
      */
     private $Receiver;
 
